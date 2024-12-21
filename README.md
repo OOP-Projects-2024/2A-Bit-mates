@@ -2,7 +2,8 @@ https://www.sourcecodester.com/php/15070/car-driving-school-management-system-ph
 this link is where my idea come from
 DELETE: http://localhost/trainingdrive-api/deleteuser/3
 DESTROY: http://localhost/trainingdrive-api/destroyuser/12
-
+HOME PAGE: http://localhost/trainingdrive-api/home
+PACKAGES PAGE: http://localhost/trainingdrive-api/packages
 TO USE THIS CODES:
 {
   "signup": {
