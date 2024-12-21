@@ -120,6 +120,9 @@ switch($_SERVER['REQUEST_METHOD']){
             } elseif ($request[0] === "enroll") {
                 // Allow "enroll" without authorization
                 echo json_encode($post->postUser($body));
+} elseif ($request[0] === "comment") {
+                // Allow "comment" without authorization
+                echo json_encode($post->postComment($body));
             } elseif ($auth->isAuthorized()) {
                 switch ($request[0]) {
                     case "user":
@@ -130,10 +133,6 @@ switch($_SERVER['REQUEST_METHOD']){
                             $body = json_decode(file_get_contents("php://input"));
                             echo json_encode($post->makePayment($body));
                             break;
-                        
-                            case "comment":
-                                echo json_encode($post->postComment($body));
-                                break;
                 
                             default:
                                 echo json_encode([
