@@ -178,16 +178,7 @@ switch($_SERVER['REQUEST_METHOD']){
                             }
                             break;
             
-                        case "account":
-                            $result = $patch->patchAccount($body, $id);
-                            if (isset($result["errmsg"])) {
-                                http_response_code(400);
-                                echo json_encode(["error" => $result["errmsg"]]);
-                            } else {
-                                http_response_code(200);
-                                echo json_encode($result);
-                            }
-                            break;
+                    
             
                         default:
                             http_response_code(404);
