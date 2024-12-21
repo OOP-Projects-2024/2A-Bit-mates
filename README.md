@@ -1,5 +1,8 @@
 https://www.sourcecodester.com/php/15070/car-driving-school-management-system-phpoop-free-source-code.html?fbclid=IwY2xjawG7dmlleHRuA2FlbQIxMAABHTxBufd5V_Bi9GA-YoZjxpkaC-YH9_gcS64yaCyQj5_mK2P5VN5kk2uSVg_aem_-HsrkBCXwwLPUD91wmrWgQ
 this link is where my idea come from
+DELETE: http://localhost/trainingdrive-api/deleteuser/3
+DESTROY: http://localhost/trainingdrive-api/destroyuser/12
+
 TO USE THIS CODES:
 {
   "signup": {
