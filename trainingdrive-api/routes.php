@@ -35,46 +35,77 @@ else{
 switch($_SERVER['REQUEST_METHOD']){
 
     case "GET":    
-        if ($auth->isAuthorized()) {
-            switch ($request[0]) {
-    
-                case "user":
-                    echo json_encode($get->getUser($request[1] ?? null));
-                break; 
-                case "users":
-                    echo json_encode($get->getAllUsers($request[1] ?? null));
-                break; 
-                    case "log":
-                        echo json_encode($get->getLogs($request[1] ?? date("Y-m-d")));
-                    break;
-// to see accounts
-                    case "account":
-                        echo json_encode($get->getAccount($request[1] ?? null));
-                    break; 
-                
-                    case "paid":
-                        echo json_encode($get->getPayments($request[1] ?? null));
-                        break;
-                        
 
+        // Public routes (No Authorization required)
+        switch ($request[0]) {
+            case "home": // Home Page
+                $filePath = __DIR__ . "/home.txt"; // Path to the home text file
+                if (file_exists($filePath)) {
+                    header('Content-Type: text/plain'); // Set content type
+                    readfile($filePath); // Output the contents
+                } else {
+                    http_response_code(404);
+                    echo "Home file not found.";
+                }
+                break;
+    
+            case "packages": // Packages Page
+                $filePath = __DIR__ . "/packages.txt"; // Path to the packages text file
+                if (file_exists($filePath)) {
+                    header('Content-Type: text/plain'); // Set content type
+                    readfile($filePath); // Output the contents
+                } else {
+                    http_response_code(404);
+                    echo "Packages file not found.";
+                }
+                break;
+    
+            default:
+                // Protected routes (Authorization required)
+                if ($auth->isAuthorized()) {
+                    switch ($request[0]) {
+                        case "user":
+                            echo json_encode($get->getUser($request[1] ?? null));
+                            break; 
+    
+                        case "users":
+                            echo json_encode($get->getAllUsers($request[1] ?? null));
+                            break; 
+    
+                        case "log":
+                            echo json_encode($get->getLogs($request[1] ?? date("Y-m-d")));
+                            break;
+    
+                        case "account":
+                            echo json_encode($get->getAccount($request[1] ?? null));
+                            break; 
+    
+                        case "paid":
+                            echo json_encode($get->getPayments($request[1] ?? null));
+                            break;
+    
                         case "notpaid":
                             echo json_encode($get->getUnpaidUsers($request[1] ?? null));
-                        break; 
-
+                            break; 
+    
                         case "commentslist":
                             echo json_encode($get->getComments($request[1] ?? null));
-                        break; 
-
-                    default:
-                        http_response_code(401);
-                        echo "This is invalid endpoint";
-                    break;
-               
-            }
-        } else {
-            echo json_encode(["status" => "unauthorized", "message" => "Unauthorized access."]);
+                            break; 
+    
+                        default:
+                            http_response_code(401);
+                            echo "This is an invalid endpoint.";
+                            break;
+                    }
+                } else {
+                    // Unauthorized Access Response
+                    http_response_code(401);
+                    echo json_encode(["status" => "unauthorized", "message" => "Unauthorized access."]);
+                }
+                break;
         }
         break;
+    
     
 
         case "POST":
@@ -178,7 +209,16 @@ switch($_SERVER['REQUEST_METHOD']){
                             }
                             break;
             
-                    
+                        case "account":
+                            $result = $patch->patchAccount($body, $id);
+                            if (isset($result["errmsg"])) {
+                                http_response_code(400);
+                                echo json_encode(["error" => $result["errmsg"]]);
+                            } else {
+                                http_response_code(200);
+                                echo json_encode($result);
+                            }
+                            break;
             
                         default:
                             http_response_code(404);
